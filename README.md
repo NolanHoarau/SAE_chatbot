@@ -34,6 +34,8 @@ sudo systemctl status docker
 
 ### mise en place du conteneur Ollama
 
+https://quelllm.fr/guide/ollama-docker-installation-guide
+
 ```bash
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
@@ -41,21 +43,16 @@ docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 - `-v ollama:/root/.ollama` creer un volume nommer ollama qui est situer dans le conteneur `/root/.ollama`
 - `-p 11434:11434` publie le port du conteneur `11434` vers le port hote `11434` pour pouvoir utiliser ollama en dehors du conteneur
 
+Pour etre sur que d'utiliser le CPU et no le GPU dans `~/.bashrc`ajouter:
+```
+export OLLAMA_NO_GPU=1
+```
+
 test de ollama:
 ```bash
 docker exec -it ollama ollama -v
 # >> ollama version is 0.40.1
 ```
-
-
-
-
-
-
-
-
-
-
 
 ### Telechargement d'un modele
 
@@ -67,4 +64,32 @@ Nous allons tester plusieurs LLMs :
 #### test llama3.1:8b
 ```bash
 docker exec -it ollama ollama pull llama3.1:8b
+```
+ou
+```bash
+docker exec -it ollama ollama run llama3.1:8b # lance le modele et l'installe si besoin
+```
+
+## Installation de WebUI
+
+docker compose:
+```yaml
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://127.0.0.1:11434
+    volumes:
+      - open-webui:/app/backend/data
+
+volumes:
+  open-webui:
+```
+
+```bash
+docker compose up -d
 ```
