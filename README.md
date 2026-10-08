@@ -37,3 +37,34 @@ sudo systemctl status docker
 ```bash
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
+- `-d` pour detacher le conteneur
+- `-v ollama:/root/.ollama` creer un volume nommer ollama qui est situer dans le conteneur `/root/.ollama`
+- `-p 11434:11434` publie le port du conteneur `11434` vers le port hote `11434` pour pouvoir utiliser ollama en dehors du conteneur
+
+test de ollama:
+```bash
+docker exec -it ollama ollama -v
+# >> ollama version is 0.40.1
+```
+
+
+
+
+
+
+
+
+
+
+
+### Telechargement d'un modele
+
+Nous allons tester plusieurs LLMs :
+- llama3.1:8b
+- mistral:7b-instruct
+- phi3:mini
+
+#### test llama3.1:8b
+```bash
+docker exec -it ollama ollama pull llama3.1:8b
+```
