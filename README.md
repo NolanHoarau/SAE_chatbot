@@ -70,6 +70,8 @@ ou
 docker exec -it ollama ollama run llama3.1:8b # lance le modele et l'installe si besoin
 ```
 
+test d'un prompt simple:
+![[llama3.1_prompt1.png]]
 ## Installation de WebUI
 
 docker compose:
