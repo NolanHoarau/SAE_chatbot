@@ -140,21 +140,73 @@ exemple avec llama3.1:8b :
 docker compose:
 ```yaml
 services:
-  open-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    container_name: open-webui
-    restart: unless-stopped
-    ports:
-      - "3000:8080"
-    environment:
-      - OLLAMA_BASE_URL=http://127.0.0.1:11434
-    volumes:
-      - open-webui:/app/backend/data
+	open-webui:
+		image: ghcr.io/open-webui/open-webui:main
+		container_name: open-webui
+		ports:
+			- "3000:8080"
+		volumes:
+			- open-webui:/app/backend/data
+		environment:
+			- OLLAMA_BASE_URL=http://host.docker.internal
+		extra-hosts:
+			- "host.docker.internal:host-gateway"
+		restart: always
 
 volumes:
-  open-webui:
+	open-webui:
 ```
+- `host.docker.internal` permet de communiquer directement sur le pc hotes et donc recuperer les models de ollama dans l'autre conteneur
+- `host-gateway` permet d'identifier l'adresse IP du pc Hote
 
 ```bash
 docker compose up -d
+```
+
+### Configuration de WebUI
+
+Deja il faut creer un compte et se connecter.
+
+Une fois connecter  dans `settings > AI > Connections` changer l'ip dans `Manage Ollama API Connections` :
+`http://<ip_pc_hote>:11434`
+
+Une fois ca fait vous pouvez utiliser les models de Ollama en local.
+
+
+## Utilisation de Bandit
+
+Bandit va permettre d'analyser le code que le model IA nous a creer avec les commandes suivantes:
+```shell
+pip bandit # installer bandit
+bandit -r main.py
+```
+
+resultat:
+```shell
+[main]    INFO    profile include tests: None
+[main]    INFO    profile exclude tests: None
+[main]    INFO    cli include tests: None
+[main]    INFO    cli exclude tests: None
+[main]    INFO    running on Python 3.13.5
+Run started:2026-10-13 09:25:11.174319+00:00
+
+Test results:
+    No issues identified.
+
+Code scanned:
+    Total lines of code: 33
+    Total lines skipped (#nosec): 0
+
+Run metrics:
+    Total issues (by severity):
+        Undefined: 0
+        Low: 0
+        Medium: 0
+        High: 0
+    Total issues (by confidence):
+        Undefined: 0
+        Low: 0
+        Medium: 0
+        High: 0
+Files skipped (0):
 ```
