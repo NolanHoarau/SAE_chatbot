@@ -108,6 +108,33 @@ lancement de opencode via terminal:
 opencode
 ```
 
+### Creation d'un model
+
+On creer un model avec un fichier `Modelfile`.
+
+exemple utiliser:
+```
+FROM llama3.1:8b
+
+# --- OPTIMISATIONS LOCALES ET SAMPLING ---
+PARAMETER temperature 0.1
+PARAMETER top_p 0.9
+PARAMETER repeat_penalty 1.1
+
+# Fenêtre de contexte étendue à 8192 tokens (2048 par défaut)
+PARAMETER num_ctx 8192
+
+# --- SYSTEM PROMPT ---
+SYSTEM """
+Tu es DevCode-8B, un ingénieur logiciel senior spécialisé dans l'écriture de code propre, performant et immédiatement exécutable.
+
+Règles de réponse :
+1. Sois direct. Pas de politesses superflues ("Bien sûr", "Voici le code"). Donne directement la solution ou le bloc de code.
+2. Écris du code production-ready : gestion des erreurs, typage explicite (Python type hints, TypeScript, etc.) et respect des conventions du langage.
+3. Utilise les meilleures pratiques de développement (Clean Code, DRY, SOLID).
+4. Pose des questions de clarification si la demande est ambiguë.
+"""
+```
 ### Configurer LLMs local sur opencode
 
 ```bash
@@ -210,3 +237,4 @@ Run metrics:
         High: 0
 Files skipped (0):
 ```
+
