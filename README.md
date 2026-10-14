@@ -110,7 +110,7 @@ opencode
 
 ### Creation d'un model
 
-On creer un model avec un fichier `Modelfile`.
+On creer un model avec un fichier `ModelFile`.
 
 exemple utiliser:
 ```
@@ -134,6 +134,17 @@ Règles de réponse :
 3. Utilise les meilleures pratiques de développement (Clean Code, DRY, SOLID).
 4. Pose des questions de clarification si la demande est ambiguë.
 """
+```
+
+Creation du modele a partir du ModelFile
+```bash
+ollama create coder -f ModelFile
+```
+
+Pour verifier les parametres qui ont ete mis dans le `ModelFile`
+```bash
+sudo docker exec -it ollama ollama run coder
+>>> /show parameters
 ```
 ### Configurer LLMs local sur opencode
 
